@@ -1,21 +1,3 @@
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Bokeh Plot</title>
-    <style>
-      html, body {
-        box-sizing: border-box;
-        height: 100%;
-        margin: 1em;
-        padding: 0;
-        font-family: helvetica;
-      }
-    </style>
-    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-3.1.1.min.js"></script>
-    <script type="text/javascript">
-        Bokeh.set_log_level("info");
-    </script>
-  </head>
   <body>
     <h1>TOD Scores of MBTA Communites</h1>
     <h2>Transit</h2>
@@ -143,4 +125,3 @@
       })();
     </script>
   </body>
-</html>
