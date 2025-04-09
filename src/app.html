@@ -5,21 +5,6 @@
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		%sveltekit.head%
-
-		<title>Bokeh Plot</title>
-		<style>
-		html, body {
-			box-sizing: border-box;
-			height: 100%;
-			margin: 1em;
-			padding: 0;
-			font-family: helvetica;
-		}
-		</style>
-		<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-3.1.1.min.js"></script>
-		<script type="text/javascript">
-			Bokeh.set_log_level("info");
-		</script>
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
