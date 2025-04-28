@@ -4,6 +4,7 @@
     import bars from "$lib/Bars.svelte";
     import Bars from "../lib/Bars.svelte";
     import UnusedHousing from "$lib/unused_housing.svelte";
+    import Timeline from "$lib/timeline.svelte";
 
     let data = [];
     let width = 400;
@@ -30,6 +31,10 @@
     commuter rail, subway, ferry, and bus stations. We wanted to get a better understanding of what those areas are like. The following visualizations 
     will give insight into the current makeup of those areas.
  </p>
+
+<h1>Boston Zoning History</h1>
+<Timeline>timeline</Timeline>
+
 <h1>Unbuilt Housing Units in MBTA Buffer Zones</h1>
 <UnusedHousing/>
 <h1>TOD Scores of MBTA Communities</h1>
