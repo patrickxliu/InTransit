@@ -29,7 +29,8 @@
     commuter rail, subway, ferry, and bus stations. We wanted to get a better understanding of what those areas are like. The following visualizations 
     will give insight into the current makeup of those areas.
  </p>
-<h1>Vis 1 TOD Scores of MBTA Communities</h1>
+<h1>TOD Scores of MBTA Communities</h1>
+<UnusedHousing/>
 <h2>Transit</h2>
 <iframe title="Hello" src="transit.html" width="100%" height="600px" />
 <h2>Orientation</h2>
