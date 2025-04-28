@@ -35,8 +35,6 @@
 <h1>Boston Zoning History</h1>
 <Timeline>timeline</Timeline>
 
-<h1>Unbuilt Housing Units in MBTA Buffer Zones</h1>
-<UnusedHousing/>
 <h1>TOD Scores of MBTA Communities</h1>
     <p>
         Information Station, a joint project between the Metropolitan Area Planning Council and Northeastern's Dukakis Center for Urban and Regional Policy, lends good insight into how legislators, policymakers, and city planners are looking at the housing problem and how the MBTA Communities Act might play a role. This project scores each MBTA community with a metric called the eTOD Score, a composite score summing three category scores: 
@@ -85,9 +83,8 @@
 <p>
     Recommendations to policymakers are focused on expanding areas which already fall into a "transit-oriented development" category. A key feature of the housing crisis is the lack of, not necessarily the quality of secured housing. We should be focused on areas which score low on transit and development, and high on orientation.
 </p>
-
-<h1>Density</h1>
-
+<h1>Unbuilt Housing Units in MBTA Buffer Zones</h1>
+<UnusedHousing/>
 <style>
     h1{
         font-family: helvetica;
