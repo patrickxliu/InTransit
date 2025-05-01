@@ -197,7 +197,9 @@
             }
         });
     }
-    window.showLayerGroup = showLayerGroup;
+    if (typeof window !== 'undefined') {
+        window.showLayerGroup = showLayerGroup;
+    }
 </script>
 <div id="layer-controls">
     <button onclick="showLayerGroup('commuter')">Commuter Rail</button>
@@ -212,4 +214,5 @@
         width: 80%;
         height: 600px;
     }
+    
 </style>

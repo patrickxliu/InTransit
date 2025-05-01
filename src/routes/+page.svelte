@@ -22,7 +22,7 @@
         })))
 </script>
 
-<img src ="/images/Title.png">
+<img src ="images/Title.png" alt="heading">
 <h1 class="question">HOW IS ZONING CURRENTLY LIMITING THE SUPPLY OF TRANSIT-ACCESSIBLE HOUSING?</h1>
 <h1>Introduction</h1>
 <p>The housing crisis in Massachusetts is at an all-time high, and as demand for housing continues to grow, 
