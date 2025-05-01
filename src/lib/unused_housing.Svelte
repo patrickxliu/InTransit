@@ -20,7 +20,7 @@
         });
         await new Promise(resolve => map.on("load", resolve));
 
-        const routes = await fetch("/mbta_lines.geojson");
+        const routes = await fetch("mbta_lines.geojson");
         const routesData = await routes.json();
         // console.log(routesData);
         map.addSource('train_lines',{
@@ -36,14 +36,14 @@
                 "line-cap": "round",
             },
             paint: {
-                "line-color": "#800080", // purple for commuter rail
-                "line-width": 3,
-                'line-opacity': .3,
+                "line-color": "#7B388C", // purple for commuter rail
+                "line-width": 1,
+                'line-opacity': 1,
             },
             filter: ["==", ["get", "network_id"], "commuter_rail"]
         });
 
-        const stations = await fetch("/mbta_stops_with_buffer_collapsed.geojson");
+        const stations = await fetch("housingdiff.geojson");
         const stationsData = await stations.json();
 
         const commuterRailStops = {
@@ -52,6 +52,7 @@
                 return feature.properties.routes.some(route => route.network_id === "commuter_rail");
             })
         };
+
         
         map.addSource('commuter_rail_stops',{
             type:'geojson',
@@ -62,51 +63,147 @@
             type: "fill",
             source: "commuter_rail_stops",
             paint: {
-                "fill-color": "#800080",  // Purple fill color
-                "fill-opacity": 0.3, 
+                "fill-color": "#7B388C",  // Purple fill color
+                "fill-opacity": 0.5, 
             },
         });
 
-        // const parcels = await fetch("/parcel_zoning_compliance_municipal_Boston.geojson");
-        // const parcelsData = await parcels.json();
+        let clickedPopup = null;
+        const popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false
+        });
 
-        // const parcelsWithinBuffer = parcelsData.features.filter(parcel => {
-        //     return commuterRailStopsWithBuffer.features.some(stop => {
-        //         const stopBuffer = turf.polygon(stop.geometry.coordinates);
-        //         const parcelGeometry = turf.polygon(parcel.geometry.coordinates);
-        //         // Check if the parcel intersects with any of the buffers
-        //         return turf.booleanIntersects(parcelGeometry, stopBuffer);
-        //     });
-        // });
+        // Add hover event listener
+        map.on('mousemove', 'commuter_rail_stations', (e) => {
+            // Get properties from the first feature under the mouse
+            if (clickedPopup) return;
+            const feature = e.features[0];
 
-        // const parcelsWithinBufferFeatureCollection = {
-        //     type: "FeatureCollection",
-        //     features: parcelsWithinBuffer,
-        // };
+            // Set the popup content and location
+            popup.setLngLat(e.lngLat)
+                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)  // Adjust field name as needed
+                .addTo(map);
+        });
 
-        // // Add the filtered parcels within buffer zones to the map
-        // map.addSource('parcels_within_buffer', {
-        //     type: 'geojson',
-        //     data: parcelsWithinBufferFeatureCollection,
-        // });
+        // Remove the popup when the mouse leaves the layer
+        map.on('mouseleave', 'commuter_rail_stations', () => {
+                popup.remove();
+            });
 
-        // // Add the parcels layer to the map
-        // map.addLayer({
-        //     id: "parcels_within_buffer_layer",
-        //     type: "fill",  // You can use "fill" to highlight the areas of the parcels
-        //     source: "parcels_within_buffer",
-        //     paint: {
-        //         "fill-color": "#00FF00",  // Green color for parcels within the buffer zones
-        //         "fill-opacity": 0.5,
-        //     },
-        // });
+        map.on('click', 'commuter_rail_stations', (e) => {
+            if (clickedPopup) {
+                clickedPopup.remove();
+                clickedPopup = null;
+            }
+        
+            const feature = e.features[0];
+
+            // Build your detailed HTML content
+            const popupContent = `
+                    <strong>${feature.properties.stop_name}</strong><br>
+                    <em>Zoned: ${feature.properties.zoned}</em><br>
+                    <em>Actual: ${feature.properties.actual}</em><br>
+                `;
+
+            // Create and show the popup
+            clickedPopup = new mapboxgl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(popupContent)
+                .addTo(map);
+
+            clickedPopup.on('close', () => {
+                clickedPopup = null;
+            });
+        });
+
+        map.on('click', (e) => {
+            // If clicking on an empty space (not a station)
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: ['commuter_rail_stations']
+            });
+
+            if (!features.length && clickedPopup) {
+                clickedPopup.remove();
+                clickedPopup = null;
+            }
+        });
+
+        const redLineStops= {
+            type: "FeatureCollection",
+            features: stationsData.features.filter(feature => {
+                return feature.properties.routes.some(route => route.route_id === "Red");
+            })
+        };
+
+        map.addSource('red_line_stops',{
+            type:'geojson',
+            data: redLineStops,
+        });
+        map.addLayer({
+            id: "red_line_stations",
+            type: "fill",
+            source: "red_line_stops",
+            paint: {
+                "fill-color": "#FA2D27",  // Purple fill color
+                "fill-opacity": 0.5, 
+            },
+        });
+
+        const greenLineStops= {
+            type: "FeatureCollection",
+            features: stationsData.features.filter(feature => {
+                return feature.properties.routes.some(route => route.route_id.includes("Green-"));
+            })
+        };
+
+        map.addSource('green_line_stops',{
+            type:'geojson',
+            data: greenLineStops,
+        });
+        map.addLayer({
+            id: "green_line_stations",
+            type: "fill",
+            source: "green_line_stops",
+            paint: {
+                "fill-color": "#008150",  // Purple fill color
+                "fill-opacity": 0.5, 
+            },
+        });
+        
+        
     }
 
     onMount(async() => {
         await Mount();
     })
-</script>
 
+    const layerGroups={
+            'commuter':['commuter_rail_stations', 'commuter_rail_layer'],
+            'green':['green_line_stations'],
+            'red':["red_line_stations"],
+        }
+
+    const allLayers=['commuter_rail_stations', 'commuter_rail_layer', 'green_line_stations', "red_line_stations"]
+
+    function showLayerGroup(groupName) {
+        const layersToShow = layerGroups[groupName];
+
+        allLayers.forEach(layerId => {
+            if (map.getLayer(layerId)) {
+                const visibility = layersToShow.includes(layerId) ? 'visible' : 'none';
+                map.setLayoutProperty(layerId, 'visibility', visibility);
+                console.log(visibility);
+            }
+        });
+    }
+    window.showLayerGroup = showLayerGroup;
+</script>
+<div id="layer-controls">
+    <button onclick="showLayerGroup('commuter')">Commuter Rail</button>
+    <button onclick="showLayerGroup('green')">Green Line</button>
+    <button onclick="showLayerGroup('red')">Red Line</button>
+</div>
 <div id="map">
 </div>
 
