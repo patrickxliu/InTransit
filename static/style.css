@@ -1,0 +1,18 @@
+img {
+  border-radius: 4px;
+  display: block;
+  margin: auto;
+  width: min(100%, 600px);
+}
+
+h1 {
+  font-family: helvetica;
+  text-align: center;
+  background-color: var(--green);
+}
+
+body {
+  background-color: rgb(32, 32, 32);
+  color: white;
+  margin: 3%;
+}

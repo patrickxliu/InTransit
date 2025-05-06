@@ -2,9 +2,9 @@
     import * as d3 from "d3";
     import {onMount} from "svelte";
     import bars from "$lib/Bars.svelte";
-    import Bars from "../lib/Bars.svelte";
     import UnusedHousing from "$lib/unused_housing.svelte";
     import Timeline from "$lib/timeline.svelte";
+    // import '../../static/style.css'
 
     let data = [];
     let width = 400;
@@ -22,8 +22,9 @@
         })))
 </script>
 
+
 <img src ="images/Title.png" alt="heading">
-<h1 class="question">HOW IS ZONING CURRENTLY LIMITING THE SUPPLY OF TRANSIT-ACCESSIBLE HOUSING?</h1>
+<!-- <h1 class="question">HOW IS ZONING CURRENTLY LIMITING THE SUPPLY OF TRANSIT-ACCESSIBLE HOUSING?</h1> -->
 <h1>Introduction</h1>
 <p>The housing crisis in Massachusetts is at an all-time high, and as demand for housing continues to grow, 
     the government is taking steps to spur more construction.
@@ -86,16 +87,35 @@
 <h1>Unbuilt Housing Units in MBTA Buffer Zones</h1>
 <UnusedHousing/>
 <style>
-    h1{
-        font-family: helvetica;
-    }
+    @import '../../static/style.css';
+    :root {
+  --blue: #2F5DA6;
+  --green: #008150;
+  --orange: #FD8A03;
+  --red: #FA2D27;
+  --silver: #9A9C9D;
+  --purple: #7B388C;
+}
+
+/* body {
+  background-color: rgb(32, 32, 32);
+  color: white;
+  margin: 3%;
+} */
+
+
+
+h1 {
+  font-family: helvetica;
+  text-align: center;
+  background-color: var(--green);
+  border-radius: 4px;
+}
+
     h2{
         font-family: helvetica;
-    }
-
-    img{
-        width:600px;
-        margin-left: auto;
-        margin-right:auto;
+        text-align: center;
+        background-color: var(--blue);
+        border-radius: 4px;
     }
 </style>
