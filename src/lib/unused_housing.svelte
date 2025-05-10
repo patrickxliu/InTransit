@@ -213,7 +213,7 @@
             closeOnClick: false
         });
 
-        // hover event listener
+        // COMMUTER LISTENERS
         map.on('mousemove', 'commuter_rail_stations', (e) => {
             const feature = e.features[0];
 
@@ -245,13 +245,12 @@
                 0     // Hide others
             ]);
 
-            const coordinates = feature.geometry.coordinates;
             const center = turf.centroid(feature).geometry.coordinates;
 
             // Zoom and center the map on the clicked station
             map.flyTo({
                 center: center,
-                zoom: 13,
+                zoom: 14,
                 speed: 1.2,
                 curve: 1.42,
                 easing: (t) => t
@@ -308,12 +307,99 @@
             type: "fill",
             source: "green_line_stops",
             paint: {
-                "fill-color": "#008150",
-                "fill-opacity": 0.2, 
+                "fill-color": "#00843d",
+                "fill-opacity": 0.0, 
             },
             layout:{
                 visibility:'none',
             },
+        });
+
+        const greenCentroids = {
+            type: 'FeatureCollection',
+            features: greenLineStops.features.map(f => {
+                const centroid = turf.centroid(f);
+                centroid.properties.stop_name= f.properties.stop_name; 
+                centroid.properties.zoned=f.properties.zoned;
+                centroid.properties.actual=f.properties.actual;
+                centroid.properties.avg_value=f.properties.avg_value;
+                return centroid;
+            }),
+        };
+
+        map.addSource('green_centroids', {
+            type: 'geojson',
+            data: greenCentroids,
+        });
+
+        map.addLayer({
+            id: "green_dots",
+            type: "circle",
+            source: "green_centroids",
+            paint: {
+                "circle-radius": 4,
+                "circle-color": "#00843d",
+            },
+            layout:{
+                visibility:'none',
+            },
+        });
+
+        // GREEN LISTENERS
+        map.on('mousemove', 'green_dots', (e) => {
+            const feature = e.features[0];
+
+            popup.setLngLat(e.lngLat)
+                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)  // Adjust field name as needed
+                .addTo(map);
+
+            map.setPaintProperty('green_dots', 'circle-radius', [
+                'case',
+                ['==', ['get', 'stop_name'], feature.properties.stop_name],
+                8,  // radius when hovered
+                4    // default radius
+            ]);
+        });
+
+        map.on('mouseleave', 'green_dots', () => {
+                popup.remove();
+                map.setPaintProperty('green_dots', 'circle-radius', 4);
+            });
+
+        map.on('click', 'green_dots', (e) => {
+            const feature = e.features[0];
+            selectedStation = e.features[0].properties.stop_name;
+
+            map.setPaintProperty('green_line_stations', 'fill-opacity', [
+                'case',
+                ['==', ['get', 'stop_name'], selectedStation],
+                0.5,  // Highlight selected buffer
+                0     // Hide others
+            ]);
+
+            const center = turf.centroid(feature).geometry.coordinates;
+
+            // Zoom and center the map on the clicked station
+            map.flyTo({
+                center: center,
+                zoom: 14,
+                speed: 1.2,
+                curve: 1.42,
+                easing: (t) => t
+            });
+
+            const barData = [
+                { key: 'Zoned Units', value: +feature.properties.zoned },
+                { key: 'Existing Units', value: +feature.properties.actual },
+            ];
+
+            updateBarChart(barData,selectedStation);
+
+            const avgPrice = feature.properties.avg_value;
+            const formattedPrice = avgPrice
+                ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                : 'N/A';
+            document.getElementById('avg-price').textContent = `${formattedPrice}`;
         });
 
         // RED LINE LAYERS
@@ -356,6 +442,118 @@
             filter: ["==", ["get", "route_id"], "Mattapan"]
         });
 
+        const redLineStops= {
+            type: "FeatureCollection",
+            features: stationsData.features.filter(feature => {
+                return feature.properties.routes.some(route => route.route_id === "Red" || route.route_id==='Mattapan');
+            })
+        };
+
+        map.addSource('red_line_stops',{
+            type:'geojson',
+            data: redLineStops,
+        });
+        map.addLayer({
+            id: "red_line_stations",
+            type: "fill",
+            source: "red_line_stops",
+            paint: {
+                "fill-color": "#da291c",
+                "fill-opacity": 0, 
+            },
+            layout:{
+                visibility:'none',
+            },
+        });
+
+        const redCentroids = {
+            type: 'FeatureCollection',
+            features: redLineStops.features.map(f => {
+                const centroid = turf.centroid(f);
+                centroid.properties.stop_name= f.properties.stop_name; 
+                centroid.properties.zoned=f.properties.zoned;
+                centroid.properties.actual=f.properties.actual;
+                centroid.properties.avg_value=f.properties.avg_value;
+                return centroid;
+            }),
+        };
+
+        map.addSource('red_centroids', {
+            type: 'geojson',
+            data: redCentroids,
+        });
+
+        map.addLayer({
+            id: "red_dots",
+            type: "circle",
+            source: "red_centroids",
+            paint: {
+                "circle-radius": 4,
+                "circle-color": "#da291c",
+            },
+            layout:{
+                visibility:'none',
+            },
+        });
+
+        // RED LISTENERS
+        map.on('mousemove', 'red_dots', (e) => {
+            const feature = e.features[0];
+
+            popup.setLngLat(e.lngLat)
+                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)  // Adjust field name as needed
+                .addTo(map);
+
+            map.setPaintProperty('red_dots', 'circle-radius', [
+                'case',
+                ['==', ['get', 'stop_name'], feature.properties.stop_name],
+                8,  // radius when hovered
+                4    // default radius
+            ]);
+        });
+
+        map.on('mouseleave', 'red_dots', () => {
+                popup.remove();
+                map.setPaintProperty('red_dots', 'circle-radius', 4);
+            });
+
+        map.on('click', 'red_dots', (e) => {
+            const feature = e.features[0];
+            selectedStation = e.features[0].properties.stop_name;
+
+            map.setPaintProperty('red_line_stations', 'fill-opacity', [
+                'case',
+                ['==', ['get', 'stop_name'], selectedStation],
+                0.5,  // Highlight selected buffer
+                0     // Hide others
+            ]);
+
+            const center = turf.centroid(feature).geometry.coordinates;
+
+            // Zoom and center the map on the clicked station
+            map.flyTo({
+                center: center,
+                zoom: 14,
+                speed: 1.2,
+                curve: 1.42,
+                easing: (t) => t
+            });
+
+            const barData = [
+                { key: 'Zoned Units', value: +feature.properties.zoned },
+                { key: 'Existing Units', value: +feature.properties.actual },
+            ];
+
+            updateBarChart(barData,selectedStation);
+
+            const avgPrice = feature.properties.avg_value;
+            const formattedPrice = avgPrice
+                ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                : 'N/A';
+            document.getElementById('avg-price').textContent = `${formattedPrice}`;
+        });
+        
+        //BLUE LINE LAYERS
         map.addLayer({
             id: "blue_line_layer",
             type: "line",
@@ -375,6 +573,118 @@
             filter: ["==", ["get", "route_id"], "Blue"]
         });
 
+        const blueLineStops= {
+            type: "FeatureCollection",
+            features: stationsData.features.filter(feature => {
+                return feature.properties.routes.some(route => route.route_id === "Blue");
+            })
+        };
+
+        map.addSource('blue_line_stops',{
+            type:'geojson',
+            data: blueLineStops,
+        });
+        map.addLayer({
+            id: "blue_line_stations",
+            type: "fill",
+            source: "blue_line_stops",
+            paint: {
+                "fill-color": "#003da5",
+                "fill-opacity": 0, 
+            },
+            layout:{
+                visibility:'none',
+            },
+        });
+
+        const blueCentroids = {
+            type: 'FeatureCollection',
+            features: blueLineStops.features.map(f => {
+                const centroid = turf.centroid(f);
+                centroid.properties.stop_name= f.properties.stop_name; 
+                centroid.properties.zoned=f.properties.zoned;
+                centroid.properties.actual=f.properties.actual;
+                centroid.properties.avg_value=f.properties.avg_value;
+                return centroid;
+            }),
+        };
+
+        map.addSource('blue_centroids', {
+            type: 'geojson',
+            data: blueCentroids,
+        });
+
+        map.addLayer({
+            id: "blue_dots",
+            type: "circle",
+            source: "blue_centroids",
+            paint: {
+                "circle-radius": 4,
+                "circle-color": "#003da5",
+            },
+            layout:{
+                visibility:'none',
+            },
+        });
+
+        // BLUE LISTENERS
+        map.on('mousemove', 'blue_dots', (e) => {
+            const feature = e.features[0];
+
+            popup.setLngLat(e.lngLat)
+                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)  // Adjust field name as needed
+                .addTo(map);
+
+            map.setPaintProperty('blue_dots', 'circle-radius', [
+                'case',
+                ['==', ['get', 'stop_name'], feature.properties.stop_name],
+                8,  // radius when hovered
+                4    // default radius
+            ]);
+        });
+
+        map.on('mouseleave', 'blue_dots', () => {
+                popup.remove();
+                map.setPaintProperty('blue_dots', 'circle-radius', 4);
+            });
+
+        map.on('click', 'blue_dots', (e) => {
+            const feature = e.features[0];
+            selectedStation = e.features[0].properties.stop_name;
+
+            map.setPaintProperty('blue_line_stations', 'fill-opacity', [
+                'case',
+                ['==', ['get', 'stop_name'], selectedStation],
+                0.5,  // Highlight selected buffer
+                0     // Hide others
+            ]);
+
+            const center = turf.centroid(feature).geometry.coordinates;
+
+            // Zoom and center the map on the clicked station
+            map.flyTo({
+                center: center,
+                zoom: 14,
+                speed: 1.2,
+                curve: 1.42,
+                easing: (t) => t
+            });
+
+            const barData = [
+                { key: 'Zoned Units', value: +feature.properties.zoned },
+                { key: 'Existing Units', value: +feature.properties.actual },
+            ];
+
+            updateBarChart(barData,selectedStation);
+
+            const avgPrice = feature.properties.avg_value;
+            const formattedPrice = avgPrice
+                ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                : 'N/A';
+            document.getElementById('avg-price').textContent = `${formattedPrice}`;
+        });
+
+        //ORANGE LINE LAYERS
         map.addLayer({
             id: "orange_line_layer",
             type: "line",
@@ -393,32 +703,117 @@
             },
             filter: ["==", ["get", "route_id"], "Orange"]
         });
-
-        const redLineStops= {
+        
+        const orangeLineStops= {
             type: "FeatureCollection",
             features: stationsData.features.filter(feature => {
-                return feature.properties.routes.some(route => route.route_id === "Red");
+                return feature.properties.routes.some(route => route.route_id === "Orange");
             })
         };
 
-        map.addSource('red_line_stops',{
+        map.addSource('orange_line_stops',{
             type:'geojson',
-            data: redLineStops,
+            data: orangeLineStops,
         });
         map.addLayer({
-            id: "red_line_stations",
+            id: "orange_line_stations",
             type: "fill",
-            source: "red_line_stops",
+            source: "orange_line_stops",
             paint: {
-                "fill-color": "#FA2D27",
-                "fill-opacity": 0.2, 
+                "fill-color": "#ed8b00",
+                "fill-opacity": 0, 
             },
             layout:{
                 visibility:'none',
             },
         });
-        
-        
+
+        const orangeCentroids = {
+            type: 'FeatureCollection',
+            features: orangeLineStops.features.map(f => {
+                const centroid = turf.centroid(f);
+                centroid.properties.stop_name= f.properties.stop_name; 
+                centroid.properties.zoned=f.properties.zoned;
+                centroid.properties.actual=f.properties.actual;
+                centroid.properties.avg_value=f.properties.avg_value;
+                return centroid;
+            }),
+        };
+
+        map.addSource('orange_centroids', {
+            type: 'geojson',
+            data: orangeCentroids,
+        });
+
+        map.addLayer({
+            id: "orange_dots",
+            type: "circle",
+            source: "orange_centroids",
+            paint: {
+                "circle-radius": 4,
+                "circle-color": "#ed8b00",
+            },
+            layout:{
+                visibility:'none',
+            },
+        });
+
+        // ORANGE LISTENERS
+        map.on('mousemove', 'orange_dots', (e) => {
+            const feature = e.features[0];
+
+            popup.setLngLat(e.lngLat)
+                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)  // Adjust field name as needed
+                .addTo(map);
+
+            map.setPaintProperty('orange_dots', 'circle-radius', [
+                'case',
+                ['==', ['get', 'stop_name'], feature.properties.stop_name],
+                8,  // radius when hovered
+                4    // default radius
+            ]);
+        });
+
+        map.on('mouseleave', 'orange_dots', () => {
+                popup.remove();
+                map.setPaintProperty('orange_dots', 'circle-radius', 4);
+            });
+
+        map.on('click', 'orange_dots', (e) => {
+            const feature = e.features[0];
+            selectedStation = e.features[0].properties.stop_name;
+
+            map.setPaintProperty('orange_line_stations', 'fill-opacity', [
+                'case',
+                ['==', ['get', 'stop_name'], selectedStation],
+                0.5,  // Highlight selected buffer
+                0     // Hide others
+            ]);
+
+            const center = turf.centroid(feature).geometry.coordinates;
+
+            // Zoom and center the map on the clicked station
+            map.flyTo({
+                center: center,
+                zoom: 14,
+                speed: 1.2,
+                curve: 1.42,
+                easing: (t) => t
+            });
+
+            const barData = [
+                { key: 'Zoned Units', value: +feature.properties.zoned },
+                { key: 'Existing Units', value: +feature.properties.actual },
+            ];
+
+            updateBarChart(barData,selectedStation);
+
+            const avgPrice = feature.properties.avg_value;
+            const formattedPrice = avgPrice
+                ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                : 'N/A';
+            document.getElementById('avg-price').textContent = `${formattedPrice}`;
+        });
     }
 
     onMount(async() => {
@@ -427,13 +822,30 @@
 
     const layerGroups={
             'commuter':['commuter_rail_stations', 'commuter_rail_layer', "commuter_dots"],
-            'green':['green_line_stations', 'green_line_layer'],
-            'red':["red_line_stations", "red_line_layer", "mattapan_layer"],
-            "blue": ["blue_line_layer"],
-            'orange': ['orange_line_layer'],
+            'green':['green_line_stations', 'green_line_layer', 'green_dots'],
+            'red':["red_line_stations", "red_line_layer", "mattapan_layer", 'red_dots'],
+            "blue": ["blue_line_layer", 'blue_line_stations', 'blue_dots'],
+            'orange': ['orange_line_layer', 'orange_line_stations', 'orange_dots'],
         }
 
-    const allLayers=['commuter_rail_stations', 'commuter_rail_layer', "commuter_dots", 'green_line_stations', "green_line_layer", "red_line_stations", "red_line_layer", "mattapan_layer", 'blue_line_layer', 'orange_line_layer']
+    const allLayers=[
+                    'commuter_rail_stations',
+                    'commuter_rail_layer',
+                    "commuter_dots",
+                    'green_line_stations',
+                    "green_line_layer",
+                    'green_dots',
+                    "red_line_stations",
+                    "red_line_layer",
+                    'red_dots',
+                    "mattapan_layer",
+                    'blue_line_layer',
+                    'blue_line_stations',
+                    'blue_dots',
+                    'orange_line_layer',
+                    'orange_line_stations',
+                    'orange_dots',
+                ]
 
     function showLayerGroup(groupName) {
         const layersToShow = layerGroups[groupName];
@@ -456,11 +868,11 @@
     <div id="map"></div>
     <div id="side-panel">
         <div id="layer-controls">
-            <button onclick="showLayerGroup('commuter')">Commuter Rail</button>
-            <button onclick="showLayerGroup('green')">Green Line</button>
-            <button onclick="showLayerGroup('red')">Red Line</button>
-            <button onclick="showLayerGroup('blue')">Blue Line</button>
-            <button onclick="showLayerGroup('orange')">Orange Line</button>
+            <button class='commuter-button' onclick="showLayerGroup('commuter')">Commuter Rail</button>
+            <button class='green-button' onclick="showLayerGroup('green')">Green Line</button>
+            <button class='red-button' onclick="showLayerGroup('red')">Red Line</button>
+            <button class='blue-button' onclick="showLayerGroup('blue')">Blue Line</button>
+            <button class='orange-button' onclick="showLayerGroup('orange')">Orange Line</button>
         </div>
         <div id="bar-chart">
             <h3 id="bar-title" class='bar-title'>Select a station</h3>
@@ -504,6 +916,7 @@
     }
 
     .price-heading{
+        padding-top: 1em;
         margin-top: 0rem;
         color: white;
         font-size: 1rem;
@@ -525,7 +938,6 @@
     }
 
     #layer-controls button {
-        background-color: #2c3e50;
         color: white;
         border: none;
         padding: 0.6rem 1rem;
@@ -536,12 +948,51 @@
     }
 
     #layer-controls button:hover {
-        background-color: #34495e;
         transform: translateY(-1px);
     }
 
     #layer-controls button:active {
         background-color: #1abc9c;
         transform: translateY(1px);
+    }
+
+    .commuter-button{
+        background-color: #7B388C;
+    }
+
+    .commuter-button:hover{
+        background-color: #4a2254;
+    }
+
+    .green-button{
+        background-color: #00843d;
+    }
+
+    .green-button:hover{
+        background-color: #004f25;
+    }
+
+    .red-button{
+        background-color: #da291c;
+    }
+
+    .red-button:hover{
+        background-color: #831911;
+    }
+
+    .blue-button{
+        background-color: #003da5;
+    }
+
+    .blue-button:hover{
+        background-color: #002563;
+    }
+
+    .orange-button{
+        background-color: #ed8b00;
+    }
+
+    .orange-button:hover{
+        background-color: #8e5300;
     }
 </style>
