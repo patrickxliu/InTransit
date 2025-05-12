@@ -103,9 +103,14 @@
     </div>
 </div>
 
-<h2>Takeaways</h2>
+<h2>Summary</h2>
     <p>
         Recommendations to policymakers are focused on expanding areas which already fall into a "transit-oriented development" category. A key feature of the housing crisis is the lack of, not necessarily the quality of secured housing. We should be focused on areas which score low on transit and development, and high on orientation.
+    </p>
+    <p>
+        The intractive visualization below allows you to explore TOD and housing statistics in the buffer zone around MBTA commuter rail and rapid-transit stations.
+         TOD scores have been normalized to be out of 100 with the addition of our Zone Potential metric. Toggling to "housing" mode allows you to explore how different
+         municipalties are or are not taking advantage of the zoning laws around MBTA stations, and how the average home price might play a role.
     </p>
 <h1>MBTA TOD & Housing by the Numbers</h1>
 <UnusedHousing/>
@@ -115,8 +120,11 @@
         Including our Zone Potential subscore, top scoring MBTA communities include Massachusetts Avenue on the Orange Line,
         Northeastern University and Symphony on the Green Line,
         South Station on the Red Line, and other downtown areas whose buffer zones are already highly developed with non-residential units. To maximize the usability of this subscore, it would be necessary to factor in <i>developable</i> zoned units.
+        The overall trend is that zoning utilization is quite low; just because housing units <i>could</i> be built doesn't mean anyone has incentive to actually do it. But the primary roadblock appears to come from residents rather than developers, via arguments against school overcrowding and lowering home values. 
+    </p>
 
-        The overall trend is that zoning utilization is quite low; just because housing units <i>could</i> be built doesn't mean anyone has incentive to actually do it. But the primary opposition appears to come from residents via arguments against school overcrowding and lowering home values. If the level of development cannot go beyond the level of the communities closest to Boston, and maybe it would fundamentally change the culture of Boston, it seems that the best route for the Massachusetts legislature to support <i>all</i> residents and would-be residents is through public transit. For example, if the current Greater Boston Metropolitan Area is not amenable to increased development, the most viable option for prospective residents would be to live further from Boston, or their work place, and commute in and as the radius expands, the barrier becomes the purchasing price of a vehicle.
+    <p>
+        If the level of development cannot go beyond the level of the communities closest to Boston, and maybe it would fundamentally change the culture of Boston, it seems that the best route for the Massachusetts legislature to support <i>all</i> residents and would-be residents is through public transit. For example, if the current Greater Boston Metropolitan Area is not amenable to increased development, the most viable option for prospective residents would be to live further from Boston, or their work place, and commute in and as the radius expands, the barrier becomes the purchasing price of a vehicle.
     </p>
 
 <h3>This project was developed with guidance and feedback from the <a href="">Metropolitan Area Planning Commission (MAPC)</a><br/><a href="https://docs.google.com/document/d/1eLbeBBbG_lnOq5hz-8NaUeGJaaxEAHeCc-pL9IDrox0/edit?tab=t.0">Sources</a></h3>
@@ -131,12 +139,6 @@
         --silver: #9A9C9D;
         --purple: #7B388C;
     }
-/* 
-    body {
-        background-color: rgb(255, 255, 255);
-        color: white;
-        margin: 3%;
-    } */
 
     h1 {
         font-family: helvetica;

@@ -43,8 +43,11 @@
             ? d3.max(barData, d => d.value)
             : Math.max(25, d3.max(barData, d => d.value));
 
-        let y = d3.scaleLinear()
+        let y = housing ? d3.scaleLinear()
             .domain([0, yMax]).nice()
+            .range([barHeight - barMargin.bottom, barMargin.top]):
+            d3.scaleLinear()
+            .domain([0, yMax])
             .range([barHeight - barMargin.bottom, barMargin.top]);
 
         // Update title
@@ -330,7 +333,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = `${tod_score}/80`;
+                document.getElementById('avg-price').textContent = `${tod_score}/100`;
             }
         });
 
@@ -481,7 +484,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = `${tod_score}/80`;
+                document.getElementById('avg-price').textContent = `${tod_score}/100`;
             }
         });
 
@@ -651,7 +654,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = `${tod_score}/80`;
+                document.getElementById('avg-price').textContent = tod_score!==0 ? `${tod_score}/100`: `N/A`;
             }
         });
         
@@ -801,7 +804,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = `${tod_score}/80`;
+                document.getElementById('avg-price').textContent = `${tod_score}/100`;
             }
         });
 
@@ -951,7 +954,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = `${tod_score}/80`;
+                document.getElementById('avg-price').textContent = `${tod_score}/100`;
             }
         });
     }
