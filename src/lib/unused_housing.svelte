@@ -22,6 +22,7 @@
                     { key: 'Transit', value: 0 },
                     { key: 'Orientation', value: 0 },
                     { key: 'Development', value: 0 },
+                    { key: 'Zone Potential', value: 0},
                 ];
     let avg_val='N/A';
     let tod_score='N/A';
@@ -160,7 +161,7 @@
         const routes = await fetch("mbta_lines.geojson");
         const routesData = await routes.json();
 
-        const stations = await fetch("final_station_info.geojson");
+        const stations = await fetch("final_station_info2.geojson");
         const stationsData = await stations.json();
 
         // BAR GRAPH
@@ -177,9 +178,11 @@
             svg.append('g').attr('class', 'y-axis');
         }
         const initialBarData = [
-            { key: 'Zoned Units', value: 0 },
-            { key: 'Existing Units', value: 0 },
-        ];
+                    { key: 'Transit', value: 0 },
+                    { key: 'Orientation', value: 0 },
+                    { key: 'Development', value: 0 },
+                    { key: 'Zone Potential', value: 0},
+                ];
 
         updateBarChart(initialBarData, 'Select a station');
 
@@ -319,7 +322,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4)
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -327,7 +330,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = `${tod_score}/80`;
             }
         });
 
@@ -387,6 +390,7 @@
                 centroid.properties.etod_sub1t=f.properties.etod_sub1t;
                 centroid.properties.etod_sub2o=f.properties.etod_sub2o;
                 centroid.properties.etod_sub3d=f.properties.etod_sub3d;
+                centroid.properties.etod_sub4z=f.properties.etod_sub4z;
                 return centroid;
             }),
         };
@@ -469,7 +473,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4)
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))        
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -477,7 +481,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = `${tod_score}/80`;
             }
         });
 
@@ -556,6 +560,7 @@
                 centroid.properties.etod_sub1t=f.properties.etod_sub1t;
                 centroid.properties.etod_sub2o=f.properties.etod_sub2o;
                 centroid.properties.etod_sub3d=f.properties.etod_sub3d;
+                centroid.properties.etod_sub4z=f.properties.etod_sub4z;
                 return centroid;
             }),
         };
@@ -638,7 +643,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4)
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -646,7 +651,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = `${tod_score}/80`;
             }
         });
         
@@ -705,6 +710,7 @@
                 centroid.properties.etod_sub1t=f.properties.etod_sub1t;
                 centroid.properties.etod_sub2o=f.properties.etod_sub2o;
                 centroid.properties.etod_sub3d=f.properties.etod_sub3d;
+                centroid.properties.etod_sub4z=f.properties.etod_sub4z;
                 return centroid;
             }),
         };
@@ -787,7 +793,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4)
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -795,7 +801,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = `${tod_score}/80`;
             }
         });
 
@@ -854,6 +860,7 @@
                 centroid.properties.etod_sub1t=f.properties.etod_sub1t;
                 centroid.properties.etod_sub2o=f.properties.etod_sub2o;
                 centroid.properties.etod_sub3d=f.properties.etod_sub3d;
+                centroid.properties.etod_sub4z=f.properties.etod_sub4z;
                 return centroid;
             }),
         };
@@ -936,7 +943,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4)
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -944,7 +951,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = `${tod_score}/80`;
             }
         });
     }
@@ -1013,12 +1020,13 @@
                         { key: 'Transit', value: 0 },
                         { key: 'Orientation', value: 0 },
                         { key: 'Development', value: 0 },
+                        { key: 'Zone Potential', value: 0}
                     ], 'Select a station');
                 }
                 else{
                     updateBarChart(todData, selectedStation)
                 }
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = tod_score!=='N/A' ? `${tod_score} / 80`: 'N/A';
             }
         }
     
