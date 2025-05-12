@@ -119,6 +119,8 @@
         The overall trend is that zoning utilization is quite low; just because housing units <i>could</i> be built doesn't mean anyone has incentive to actually do it. But the primary opposition appears to come from residents via arguments against school overcrowding and lowering home values. If the level of development cannot go beyond the level of the communities closest to Boston, and maybe it would fundamentally change the culture of Boston, it seems that the best route for the Massachusetts legislature to support <i>all</i> residents and would-be residents is through public transit. For example, if the current Greater Boston Metropolitan Area is not amenable to increased development, the most viable option for prospective residents would be to live further from Boston, or their work place, and commute in and as the radius expands, the barrier becomes the purchasing price of a vehicle.
     </p>
 
+<h3>This project was developed with guidance and feedback from the <a href="">Metropolitan Area Planning Commission (MAPC)</a><br/><a href="https://docs.google.com/document/d/1eLbeBBbG_lnOq5hz-8NaUeGJaaxEAHeCc-pL9IDrox0/edit?tab=t.0">Sources</a></h3>
+
 <style>
     @import '../../static/style.css';
     :root {
@@ -147,6 +149,13 @@
         font-family: helvetica;
         text-align: center;
         background-color: var(--blue);
+        border-radius: 4px;
+    }
+
+    h3 {
+        font-family: helvetica;
+        text-align: center;
+        background-color: var(--silver);
         border-radius: 4px;
     }
 
