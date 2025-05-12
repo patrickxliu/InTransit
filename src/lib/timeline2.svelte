@@ -268,7 +268,7 @@
       <!-- Train -->
       <img
         class="train"
-        src="/train.TIFF"
+        src="/train2.png"
         alt="Train"
         style="--trainX: {scrollProgress * trainMaxMove}px"
       />
