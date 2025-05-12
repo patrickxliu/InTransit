@@ -5,18 +5,19 @@
     const trainMaxMove = 1200;
   
     const events = [
-      { year: 1920, title: "Massachusetts Zoning Enabling Act", description: "abcdef ghi" },
-      { year: 1956, title: "Boston Zoning Charter Adopted", description: "xyz lmn opq rst" },
-      { year: 1966, title: "Home Rule Amendment", description: "jkl mno pqrs tuvw" },
-      { year: 1957, title: "Boston Redevelopment Authority Founded", description: "abcdef ghi" },
-      { year: 1958, title: "Boston’s West End cleared", description: "abcdef ghi" },
-      { year: 1960, title: "Planning Board merges with BRA", description: "abcdef ghi" },
-      { year: 1968, title: "Fair Housing Act", description: "abcdef ghi" },
-      { year: 1969, title: "Anti-Snob Zoning Law (Chapter 40B)", description: "abcdef ghi" },
-      { year: 1975, title: "Reforming State Zoning Act (Chapter 40A)", description: "abcdef ghi" },
-      { year: 1993, title: "Economic Dev. & Industrial Corp. acts citywide", description: "abcdef ghi" },
-      { year: 2021, title: "Fair Housing Zoning Amendment, MBTA Communities Act", description: "abcdef ghi" },
-      { year: 2024, title: "Mayor Wu establishes Planning Dept.", description: "abcdef ghi" }
+      { year: 1920, title: "Massachusetts Zoning Enabling Act", description: "This state act gave localities the power to use and create zoning ordinances." },
+      { year: 1956, title: "Boston Zoning Charter Adopted", description: "This was Boston's first city-wide zoning code." },
+      { year: 1957, title: "Boston Redevelopment Authority Founded", description: "Formed with the task of overseeing zoning and future planning through redevelopment, this group led some controversial clearance initiatives such as Boston’s West End." },
+      { year: 1958, title: "Boston’s West End cleared", description: "With the goal of urban renewal, the city of Boston seized and demolished this neighborhood, leading to the displacement of its diverse, working-class community. Enabled by the federal Housing Act of 1949, this redevelopment impacted the zoning of the area, one of many examples of how rapid redevelopment of the city often shaped zoning - at the cost of some of its communities." },
+      { year: 1960, title: "City Planning Board merges with BRA", description: "This strengthened and centralized power, highlighting Boston’s planning-oriented zoning approach." },
+      { year: 1966, title: "Home Rule Amendment", description: "This state amendment increased city self-government, giving Boston more control over its zoning code." },
+      { year: 1968, title: "Fair Housing Act", description: "This federal act aimed to promote equal rights and access to housing. However, zoning ordinances and local planning worked against this, making fair housing far from the reality." },
+      { year: 1969, title: "Anti-Snob Zoning Law (Chapter 40B)", description: "Aimed at pushing back on exclusionary zoning, this state law allowed developers to bypass local zoning when building affordable housing." },
+      { year: 1975, title: "Reforming State Zoning Act (Chapter 40A)", description: "Standardized the state-wide zoning processes for all localities except Boston." },
+      { year: 1993, title: "Economic Development and Industrial Corporation of Boston and the BRA Merged", description: "While still legally acting as separate entities, in functionally working together and sharing resources, this centralized power created a singular city wide development agency." },
+      { year: 2021, title: "Fair Housing Zoning Amendment", description: "An attempt to reverse the exclusionary zoning of the past, this made Boston the first major city in the US to include fair housing requirements directly in the zoning code." },
+      { year: 2021, title: "MBTA Communities Act", description: "State-wide housing policy aimed at further housing development in transit-accessible areas." },
+      { year: 2024, title: "Mayor Wu establishes Planning Dept.", description: "This brought planning under municipal control, allowing for more control over how planning initiatives impact and work alongside other citywide initiatives/goals." }
     ];
   
     const startYear = 1920;
