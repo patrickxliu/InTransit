@@ -101,7 +101,7 @@
         Northeastern University and Symphony on the Green Line,
         South Station on the Red Line, and other downtown areas whose buffer zones are already highly developed with non-residential units. To maximize the usability of this subscore, it would be necessary to factor in <i>developable</i> zoned units.
 
-        The overall trend is that zoning utilization is quite low; just because housing units <i>could</i> be built doesn't mean anyone has incentive to actually do it. But the primary opposition appears to come from residents via arguments against school overcrowding and lowering home values.
+        The overall trend is that zoning utilization is quite low; just because housing units <i>could</i> be built doesn't mean anyone has incentive to actually do it. But the primary opposition appears to come from residents via arguments against school overcrowding and lowering home values. If the level of development cannot go beyond the level of the communities closest to Boston, and maybe it would fundamentally change the culture of Boston, it seems that the best route for the Massachusetts legislature to support <i>all</i> residents and would-be residents is through public transit. For example, if the current Greater Boston Metropolitan Area is not amenable to increased development, the most viable option for prospective residents would be to live further from Boston, or their work place, and commute in and as the radius expands, the barrier becomes the purchasing price of a vehicle.
     </p>
 
 <style>
