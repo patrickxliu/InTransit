@@ -41,7 +41,7 @@
 
         let yMax = housing && d3.max(barData, d => d.value)!==0
             ? d3.max(barData, d => d.value)
-            : Math.max(20, d3.max(barData, d => d.value));
+            : Math.max(25, d3.max(barData, d => d.value));
 
         let y = d3.scaleLinear()
             .domain([0, yMax]).nice()
@@ -314,7 +314,7 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z*4 },
+                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
             ];
 
             const avgPrice = feature.properties.avg_value;
@@ -322,7 +322,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -465,7 +465,7 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z*4 },
+                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
             ];
 
             const avgPrice = feature.properties.avg_value;
@@ -473,7 +473,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))        
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z))        
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -635,7 +635,7 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z*4 },
+                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
             ];
             
             const avgPrice = feature.properties.avg_value;
@@ -643,7 +643,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -785,7 +785,7 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z*4 },
+                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
             ];
             
             const avgPrice = feature.properties.avg_value;
@@ -793,7 +793,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -935,7 +935,7 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z*4 },
+                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
             ];
             
             const avgPrice = feature.properties.avg_value;
@@ -943,7 +943,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -1026,7 +1026,7 @@
                 else{
                     updateBarChart(todData, selectedStation)
                 }
-                document.getElementById('avg-price').textContent = tod_score!=='N/A' ? `${tod_score} / 80`: 'N/A';
+                document.getElementById('avg-price').textContent = tod_score!=='N/A' ? `${tod_score} / 100`: 'N/A';
             }
         }
     

@@ -51,37 +51,57 @@
     <p>
         Each category score is the sum of several subscores, each of which represent the quintile ranking of an MBTA community against all MBTA communities.
     </p>
-<h2>Transit</h2>
-    <!-- <iframe title="Hello" src="transit.html" width="100%" height="600px" /> -->
-    <p>
-        The Transit score is the sum of three factors: 
-    </p>
-    <ul>
-        <li>Land area accessibility: acreage accessible via transit within 30 minutes including transfers, scaled by frequency of transit service</li>
-        <li>Frequency and utilization of transit: number of transit trips scheduled per week at a station, weighted by transit commute share and vehicles per household</li>
-        <li>Percent of commuters using a mode other than driving alone: high ranking station areas get quality and frequent transit service</li>
-    </ul>
-<h2>Orientation</h2>
-    <!-- <iframe title="Hello" src="orientation.html" width="100%" height="600px" /> -->
-    <p>
-        The Orientation score is the sum of four factors: 
-    </p>
-    <ul>
-        <li>Percent of households with 0 vehicles available: high ranking station areas are likely to have higher transit ridership and lower VMT per household</li>
-        <li>Percent of households earning under 25k per year: high ranking station areas are likely to depend on transit for mobility</li>
-        <li>Renters as a share of all households: high ranking stations are more likely to use public transport than homeowners and less likely to own cars, more likely to use transit</li>
-        <li>Estimated household transportation costs as a percent of regional median income: high ranking stations have viable alternatives to costly driving</li>
-    </ul>
-<h2>Development</h2>
-    <!-- <iframe title="Hello" src="development.html" width="100%" height="600px" /> -->
-    <p>
-        The Development score is the sum of three factors: 
-    </p>
-    <ul>
-        <li>Walk score: amenities within 5 min walk=0.25 miles of station, then decaying with increasing distance, distances greater than 30 min walk are not considered</li>
-        <li>Residential density in station area: high ranking stations indicate more households are within walking distance</li>
-        <li>Employment proximity to station area: high ranking stations indicate jobs close/accessible via transit</li>
-    </ul>
+<div class='score-grid'>
+    <div class='score-cat'>
+        <h2>Transit</h2>
+        <!-- <iframe title="Hello" src="transit.html" width="100%" height="600px" /> -->
+        <p>
+            The Transit score is the sum of three factors: 
+        </p>
+        <ul>
+            <li>Land area accessibility: acreage accessible via transit within 30 minutes including transfers, scaled by frequency of transit service</li>
+            <li>Frequency and utilization of transit: number of transit trips scheduled per week at a station, weighted by transit commute share and vehicles per household</li>
+            <li>Percent of commuters using a mode other than driving alone: high ranking station areas get quality and frequent transit service</li>
+        </ul>
+    </div>
+    <div class='score-cat'>
+        <h2>Orientation</h2>
+        <!-- <iframe title="Hello" src="orientation.html" width="100%" height="600px" /> -->
+        <p>
+            The Orientation score is the sum of four factors: 
+        </p>
+        <ul>
+            <li>Percent of households with 0 vehicles available: high ranking station areas are likely to have higher transit ridership and lower VMT per household</li>
+            <li>Percent of households earning under 25k per year: high ranking station areas are likely to depend on transit for mobility</li>
+            <li>Renters as a share of all households: high ranking stations are more likely to use public transport than homeowners and less likely to own cars, more likely to use transit</li>
+            <li>Estimated household transportation costs as a percent of regional median income: high ranking stations have viable alternatives to costly driving</li>
+        </ul>
+    </div>
+    <div class='score-cat'>
+        <h2>Development</h2>
+        <!-- <iframe title="Hello" src="development.html" width="100%" height="600px" /> -->
+        <p>
+            The Development score is the sum of three factors: 
+        </p>
+        <ul>
+            <li>Walk score: amenities within 5 min walk (0.25 mi) of station, then decaying with increasing distance, distances greater than 30 min walk are not considered</li>
+            <li>Residential density in station area: high ranking stations indicate more households are within walking distance</li>
+            <li>Employment proximity to station area: high ranking stations indicate jobs close/accessible via transit</li>
+        </ul>
+    </div>
+    <div class='score-cat'>
+        <h2>Zone Potential</h2>
+        <p>
+            While TOD metrics do a great job of encapsulating the current infrastructure and demographics around MBTA stations, it does not 
+            show much about how zoning policies are enabling or restricting the further devlopment in those areas.
+        </p>
+        <p>
+            Thus, we introduce our own metric, Zone Potential,
+            which is the quintile ranking of housing units allowed by current zoning policies. A higher score indicates that current zoning policies enable the 
+            addiition of more housing units in the future. This score is scaled to have equal weight as each of the other scores.
+        </p>
+    </div>
+</div>
 
 <h2>Takeaways</h2>
     <p>
@@ -89,11 +109,6 @@
     </p>
 <h1>MBTA TOD & Housing by the Numbers</h1>
 <UnusedHousing/>
-
-<h2>Zone Potential</h2>
-    <p>
-        The Zone Potential score is the quintile ranking of zoned units, less built housing. In other words, it is the number of additional housing units that zoning supports.
-    </p>
 
 <h1>Conclusions and Future Directions</h1>
     <p>
@@ -133,5 +148,17 @@
         text-align: center;
         background-color: var(--blue);
         border-radius: 4px;
+    }
+
+    .score-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .score-cat {
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 </style>
