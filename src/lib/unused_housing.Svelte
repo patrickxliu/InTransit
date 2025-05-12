@@ -22,7 +22,6 @@
                     { key: 'Transit', value: 0 },
                     { key: 'Orientation', value: 0 },
                     { key: 'Development', value: 0 },
-                    { key: 'Zone Potential', value: 0 },
                 ];
     let avg_val='N/A';
     let tod_score='N/A';
@@ -161,7 +160,7 @@
         const routes = await fetch("mbta_lines.geojson");
         const routesData = await routes.json();
 
-        const stations = await fetch("final_station_info2.geojson");
+        const stations = await fetch("final_station_info.geojson");
         const stationsData = await stations.json();
 
         // BAR GRAPH
@@ -312,7 +311,6 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
             ];
 
             const avgPrice = feature.properties.avg_value;
@@ -320,7 +318,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+feature.properties.etod_sub4z
+            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -388,7 +386,6 @@
                 centroid.properties.etod_sub1t=f.properties.etod_sub1t;
                 centroid.properties.etod_sub2o=f.properties.etod_sub2o;
                 centroid.properties.etod_sub3d=f.properties.etod_sub3d;
-                centroid.properties.etod_sub4z=f.properties.etod_sub4z;
                 return centroid;
             }),
         };
@@ -463,7 +460,6 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
             ];
 
             const avgPrice = feature.properties.avg_value;
@@ -471,7 +467,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+feature.properties.etod_sub4z
+            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -558,7 +554,6 @@
                 centroid.properties.etod_sub1t=f.properties.etod_sub1t;
                 centroid.properties.etod_sub2o=f.properties.etod_sub2o;
                 centroid.properties.etod_sub3d=f.properties.etod_sub3d;
-                centroid.properties.etod_sub4z=f.properties.etod_sub4z;
                 return centroid;
             }),
         };
@@ -633,7 +628,6 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
             ];
             
             const avgPrice = feature.properties.avg_value;
@@ -641,7 +635,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+feature.properties.etod_sub4z
+            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -708,7 +702,6 @@
                 centroid.properties.etod_sub1t=f.properties.etod_sub1t;
                 centroid.properties.etod_sub2o=f.properties.etod_sub2o;
                 centroid.properties.etod_sub3d=f.properties.etod_sub3d;
-                centroid.properties.etod_sub4z=f.properties.etod_sub4z;
                 return centroid;
             }),
         };
@@ -783,7 +776,6 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
             ];
             
             const avgPrice = feature.properties.avg_value;
@@ -791,7 +783,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+feature.properties.etod_sub4z
+            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -858,7 +850,6 @@
                 centroid.properties.etod_sub1t=f.properties.etod_sub1t;
                 centroid.properties.etod_sub2o=f.properties.etod_sub2o;
                 centroid.properties.etod_sub3d=f.properties.etod_sub3d;
-                centroid.properties.etod_sub4z=f.properties.etod_sub4z;
                 return centroid;
             }),
         };
@@ -933,7 +924,6 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
             ];
             
             const avgPrice = feature.properties.avg_value;
@@ -941,7 +931,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+feature.properties.etod_sub4z
+            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -1018,7 +1008,6 @@
                         { key: 'Transit', value: 0 },
                         { key: 'Orientation', value: 0 },
                         { key: 'Development', value: 0 },
-                        { key: 'Zone Potential', value: 0 },
                     ], 'Select a station');
                 }
                 else{
