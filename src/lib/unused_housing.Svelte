@@ -3,16 +3,28 @@
     import "../../node_modules/mapbox-gl/dist/mapbox-gl.css";
     import * as d3 from "d3";
     import * as turf from '@turf/turf';
-    // import routesData from "$lib/mbta_lines.geojson"
 
     mapboxgl.accessToken = "pk.eyJ1IjoicGF0cmlja3hsaXUiLCJhIjoiY205OTF3ZHlsMDl4eTJpb2hnazRsM2o3eiJ9.Gfabla7QnJ0-1W5qddqoRw";
 
     import { onMount } from "svelte";
 
+    let initialized=false;
     let map;
     let selectedStation=null;
     const barWidth = 400;
     const barHeight = 350;
+    let housing=false;
+    let housingData= [
+                    { key: 'Zoned Units', value: 0 },
+                    { key: 'Existing Units', value: 0 },
+                ];;
+    let todData =[
+                    { key: 'Transit', value: 0 },
+                    { key: 'Orientation', value: 0 },
+                    { key: 'Development', value: 0 },
+                ];
+    let avg_val='N/A';
+    let tod_score='N/A';
     
     function updateBarChart(barData, titleText) {
         const svg = d3.select('#bar-chart svg');
@@ -20,13 +32,18 @@
         const barWidth = 400;
         const barMargin = { top: 20, right: 20, bottom: 20, left: 40 };
 
+
         const x = d3.scaleBand()
             .domain(barData.map(d => d.key))
             .range([barMargin.left, barWidth - barMargin.right])
             .padding(0.1);
 
-        const y = d3.scaleLinear()
-            .domain([0, d3.max(barData, d => d.value)]).nice()
+        let yMax = housing && d3.max(barData, d => d.value)!==0
+            ? d3.max(barData, d => d.value)
+            : Math.max(20, d3.max(barData, d => d.value));
+
+        let y = d3.scaleLinear()
+            .domain([0, yMax]).nice()
             .range([barHeight - barMargin.bottom, barMargin.top]);
 
         // Update title
@@ -67,29 +84,57 @@
             .selectAll('text')
             .data(barData, d => d.key);
 
-        labels.join(
-            enter => enter.append('text')
-                .attr('class', 'bar-label')
-                .attr('fill', 'white') 
-                .attr('x', d => x(d.key) + x.bandwidth() / 2)
-                .attr('y', y(0))
-                .attr('text-anchor', 'middle')
-                .text(d => d.value === 0 ? 'No data' : d.value)
-                .transition()
-                .duration(500)
-                .attr('y', d => y(d.value) - 5),
+        if (housing){
+            labels.join(
+                enter => enter.append('text')
+                    .attr('class', 'bar-label')
+                    .attr('fill', 'white') 
+                    .attr('x', d => x(d.key) + x.bandwidth() / 2)
+                    .attr('y', y(0))
+                    .attr('text-anchor', 'middle')
+                    .text(d => d.value === 0 ? 'No data' : d.value)
+                    .transition()
+                    .duration(500)
+                    .attr('y', d => y(d.value) - 5),
 
-            update => update.transition()
-                .duration(500)
-                .attr('x', d => x(d.key) + x.bandwidth() / 2)
-                .attr('y', d => y(d.value) - 5)
-                .text(d => d.value === 0 ? 'No data' : d.value),
+                update => update.transition()
+                    .duration(500)
+                    .attr('x', d => x(d.key) + x.bandwidth() / 2)
+                    .attr('y', d => y(d.value) - 5)
+                    .text(d => d.value === 0 ? 'No data' : d.value),
 
-            exit => exit.transition()
-                .duration(300)
-                .attr('y', y(0))
-                .remove()
-        );
+                exit => exit.transition()
+                    .duration(300)
+                    .attr('y', y(0))
+                    .remove()
+            );
+        }
+
+        else{
+            labels.join(
+                enter => enter.append('text')
+                    .attr('class', 'bar-label')
+                    .attr('fill', 'white') 
+                    .attr('x', d => x(d.key) + x.bandwidth() / 2)
+                    .attr('y', y(0))
+                    .attr('text-anchor', 'middle')
+                    .text(d => d.value === 0 ? 'No data' : d.value)
+                    .transition()
+                    .duration(500)
+                    .attr('y', d => y(d.value) - 5),
+
+                update => update.transition()
+                    .duration(500)
+                    .attr('x', d => x(d.key) + x.bandwidth() / 2)
+                    .attr('y', d => y(d.value) - 5)
+                    .text(d => d.value === 0 ? 'No data' : d.value),
+
+                exit => exit.transition()
+                    .duration(300)
+                    .attr('y', y(0))
+                    .remove()
+            );
+        }
 
         svg.select('.x-axis')
             .attr('transform', `translate(0,${barHeight - barMargin.bottom})`)
@@ -115,7 +160,7 @@
         const routes = await fetch("mbta_lines.geojson");
         const routesData = await routes.json();
 
-        const stations = await fetch("station_info.geojson");
+        const stations = await fetch("final_station_info.geojson");
         const stationsData = await stations.json();
 
         // BAR GRAPH
@@ -133,7 +178,7 @@
         }
         const initialBarData = [
             { key: 'Zoned Units', value: 0 },
-            { key: 'Existing Units', value: 0 }
+            { key: 'Existing Units', value: 0 },
         ];
 
         updateBarChart(initialBarData, 'Select a station');
@@ -218,7 +263,7 @@
             const feature = e.features[0];
 
             popup.setLngLat(e.lngLat)
-                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)  // Adjust field name as needed
+                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)
                 .addTo(map);
 
             map.setPaintProperty('commuter_dots', 'circle-radius', [
@@ -256,18 +301,33 @@
                 easing: (t) => t
             });
 
-            const barData = [
+            
+            housingData = [
                 { key: 'Zoned Units', value: +feature.properties.zoned },
                 { key: 'Existing Units', value: +feature.properties.actual },
             ];
-
-            updateBarChart(barData,selectedStation);
+        
+            todData = [
+                { key: 'Transit', value: +feature.properties.etod_sub1t },
+                { key: 'Orientation', value: +feature.properties.etod_sub2o },
+                { key: 'Development', value: +feature.properties.etod_sub3d },
+            ];
 
             const avgPrice = feature.properties.avg_value;
-            const formattedPrice = avgPrice
+            avg_val= avgPrice
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
-            document.getElementById('avg-price').textContent = `${formattedPrice}`;
+
+            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d
+            
+            if (housing){
+                updateBarChart(housingData,selectedStation);
+                document.getElementById('avg-price').textContent = `${avg_val}`;
+            }
+            else{
+                updateBarChart(todData,selectedStation);
+                document.getElementById('avg-price').textContent = tod_score;
+            }
         });
 
         //GREEN LINE LAYERS
@@ -323,6 +383,9 @@
                 centroid.properties.zoned=f.properties.zoned;
                 centroid.properties.actual=f.properties.actual;
                 centroid.properties.avg_value=f.properties.avg_value;
+                centroid.properties.etod_sub1t=f.properties.etod_sub1t;
+                centroid.properties.etod_sub2o=f.properties.etod_sub2o;
+                centroid.properties.etod_sub3d=f.properties.etod_sub3d;
                 return centroid;
             }),
         };
@@ -350,7 +413,7 @@
             const feature = e.features[0];
 
             popup.setLngLat(e.lngLat)
-                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)  // Adjust field name as needed
+                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)
                 .addTo(map);
 
             map.setPaintProperty('green_dots', 'circle-radius', [
@@ -388,18 +451,32 @@
                 easing: (t) => t
             });
 
-            const barData = [
+            housingData = [
                 { key: 'Zoned Units', value: +feature.properties.zoned },
                 { key: 'Existing Units', value: +feature.properties.actual },
             ];
-
-            updateBarChart(barData,selectedStation);
+        
+            todData = [
+                { key: 'Transit', value: +feature.properties.etod_sub1t },
+                { key: 'Orientation', value: +feature.properties.etod_sub2o },
+                { key: 'Development', value: +feature.properties.etod_sub3d },
+            ];
 
             const avgPrice = feature.properties.avg_value;
-            const formattedPrice = avgPrice
+            avg_val= avgPrice
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
-            document.getElementById('avg-price').textContent = `${formattedPrice}`;
+
+            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d
+            
+            if (housing){
+                updateBarChart(housingData,selectedStation);
+                document.getElementById('avg-price').textContent = `${avg_val}`;
+            }
+            else{
+                updateBarChart(todData,selectedStation);
+                document.getElementById('avg-price').textContent = tod_score;
+            }
         });
 
         // RED LINE LAYERS
@@ -474,6 +551,9 @@
                 centroid.properties.zoned=f.properties.zoned;
                 centroid.properties.actual=f.properties.actual;
                 centroid.properties.avg_value=f.properties.avg_value;
+                centroid.properties.etod_sub1t=f.properties.etod_sub1t;
+                centroid.properties.etod_sub2o=f.properties.etod_sub2o;
+                centroid.properties.etod_sub3d=f.properties.etod_sub3d;
                 return centroid;
             }),
         };
@@ -501,7 +581,7 @@
             const feature = e.features[0];
 
             popup.setLngLat(e.lngLat)
-                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)  // Adjust field name as needed
+                .setHTML(`<strong>${feature.properties.stop_name}</strong>`) 
                 .addTo(map);
 
             map.setPaintProperty('red_dots', 'circle-radius', [
@@ -539,18 +619,32 @@
                 easing: (t) => t
             });
 
-            const barData = [
+            housingData = [
                 { key: 'Zoned Units', value: +feature.properties.zoned },
                 { key: 'Existing Units', value: +feature.properties.actual },
             ];
-
-            updateBarChart(barData,selectedStation);
-
+        
+            todData = [
+                { key: 'Transit', value: +feature.properties.etod_sub1t },
+                { key: 'Orientation', value: +feature.properties.etod_sub2o },
+                { key: 'Development', value: +feature.properties.etod_sub3d },
+            ];
+            
             const avgPrice = feature.properties.avg_value;
-            const formattedPrice = avgPrice
+            avg_val= avgPrice
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
-            document.getElementById('avg-price').textContent = `${formattedPrice}`;
+
+            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d
+            
+            if (housing){
+                updateBarChart(housingData,selectedStation);
+                document.getElementById('avg-price').textContent = `${avg_val}`;
+            }
+            else{
+                updateBarChart(todData,selectedStation);
+                document.getElementById('avg-price').textContent = tod_score;
+            }
         });
         
         //BLUE LINE LAYERS
@@ -605,6 +699,9 @@
                 centroid.properties.zoned=f.properties.zoned;
                 centroid.properties.actual=f.properties.actual;
                 centroid.properties.avg_value=f.properties.avg_value;
+                centroid.properties.etod_sub1t=f.properties.etod_sub1t;
+                centroid.properties.etod_sub2o=f.properties.etod_sub2o;
+                centroid.properties.etod_sub3d=f.properties.etod_sub3d;
                 return centroid;
             }),
         };
@@ -632,7 +729,7 @@
             const feature = e.features[0];
 
             popup.setLngLat(e.lngLat)
-                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)  // Adjust field name as needed
+                .setHTML(`<strong>${feature.properties.stop_name}</strong>`) 
                 .addTo(map);
 
             map.setPaintProperty('blue_dots', 'circle-radius', [
@@ -670,18 +767,32 @@
                 easing: (t) => t
             });
 
-            const barData = [
+            housingData = [
                 { key: 'Zoned Units', value: +feature.properties.zoned },
                 { key: 'Existing Units', value: +feature.properties.actual },
             ];
-
-            updateBarChart(barData,selectedStation);
-
+        
+            todData = [
+                { key: 'Transit', value: +feature.properties.etod_sub1t },
+                { key: 'Orientation', value: +feature.properties.etod_sub2o },
+                { key: 'Development', value: +feature.properties.etod_sub3d },
+            ];
+            
             const avgPrice = feature.properties.avg_value;
-            const formattedPrice = avgPrice
+            avg_val= avgPrice
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
-            document.getElementById('avg-price').textContent = `${formattedPrice}`;
+
+            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d
+            
+            if (housing){
+                updateBarChart(housingData,selectedStation);
+                document.getElementById('avg-price').textContent = `${avg_val}`;
+            }
+            else{
+                updateBarChart(todData,selectedStation);
+                document.getElementById('avg-price').textContent = tod_score;
+            }
         });
 
         //ORANGE LINE LAYERS
@@ -736,6 +847,9 @@
                 centroid.properties.zoned=f.properties.zoned;
                 centroid.properties.actual=f.properties.actual;
                 centroid.properties.avg_value=f.properties.avg_value;
+                centroid.properties.etod_sub1t=f.properties.etod_sub1t;
+                centroid.properties.etod_sub2o=f.properties.etod_sub2o;
+                centroid.properties.etod_sub3d=f.properties.etod_sub3d;
                 return centroid;
             }),
         };
@@ -763,7 +877,7 @@
             const feature = e.features[0];
 
             popup.setLngLat(e.lngLat)
-                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)  // Adjust field name as needed
+                .setHTML(`<strong>${feature.properties.stop_name}</strong>`)
                 .addTo(map);
 
             map.setPaintProperty('orange_dots', 'circle-radius', [
@@ -801,23 +915,38 @@
                 easing: (t) => t
             });
 
-            const barData = [
+            housingData = [
                 { key: 'Zoned Units', value: +feature.properties.zoned },
                 { key: 'Existing Units', value: +feature.properties.actual },
             ];
-
-            updateBarChart(barData,selectedStation);
-
+        
+            todData = [
+                { key: 'Transit', value: +feature.properties.etod_sub1t },
+                { key: 'Orientation', value: +feature.properties.etod_sub2o },
+                { key: 'Development', value: +feature.properties.etod_sub3d },
+            ];
+            
             const avgPrice = feature.properties.avg_value;
-            const formattedPrice = avgPrice
+            avg_val= avgPrice
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
-            document.getElementById('avg-price').textContent = `${formattedPrice}`;
+
+            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d
+            
+            if (housing){
+                updateBarChart(housingData,selectedStation);
+                document.getElementById('avg-price').textContent = `${avg_val}`;
+            }
+            else{
+                updateBarChart(todData,selectedStation);
+                document.getElementById('avg-price').textContent = tod_score;
+            }
         });
     }
 
     onMount(async() => {
         await Mount();
+        initialized=true;
     })
 
     const layerGroups={
@@ -854,7 +983,6 @@
             if (map.getLayer(layerId)) {
                 const visibility = layersToShow.includes(layerId) ? 'visible' : 'none';
                 map.setLayoutProperty(layerId, 'visibility', visibility);
-                console.log(visibility);
             }
         });
     }
@@ -862,6 +990,33 @@
         window.showLayerGroup = showLayerGroup;
     }
 
+    $: if (initialized){
+            if (housing) {
+                if (selectedStation===null){
+                    updateBarChart([
+                        { key: 'Zoned Units', value: 0 },
+                        { key: 'Existing Units', value: 0 },
+                    ], 'Select a station');
+                }
+                else{
+                    updateBarChart(housingData, selectedStation)
+                }
+                document.getElementById('avg-price').textContent = `${avg_val}`;
+            } else {
+                if (selectedStation===null){
+                    updateBarChart([
+                        { key: 'Transit', value: 0 },
+                        { key: 'Orientation', value: 0 },
+                        { key: 'Development', value: 0 },
+                    ], 'Select a station');
+                }
+                else{
+                    updateBarChart(todData, selectedStation)
+                }
+                document.getElementById('avg-price').textContent = tod_score;
+            }
+        }
+    
 </script>
 
 <div id="container">
@@ -875,9 +1030,19 @@
             <button class='orange-button' onclick="showLayerGroup('orange')">Orange Line</button>
         </div>
         <div id="bar-chart">
-            <h3 id="bar-title" class='bar-title'>Select a station</h3>
+            <div class="bar-title-container">
+                <h3 id="bar-title" class="bar-title">Select a station</h3>
+                <div class="switch-labeled">
+                    <span class="switch-label">TOD</span>
+                    <label class="switch">
+                        <input type="checkbox" bind:checked={housing}>
+                        <span class="slider"></span>
+                    </label>
+                    <span class="switch-label">Housing</span>
+                </div>
+            </div>
         </div>
-        <div class='price-heading'>Average Home Price:</div>
+        <div class='price-heading'>{housing ? 'Average Home Price:' : 'Total TOD Score:'}</div>
         <div id="avg-price" class="price-display">N/A</div>
     </div>
 </div>
@@ -907,9 +1072,64 @@
         padding: 1rem;
         box-sizing: border-box;
     }
-    .bar-title{
-        font-size: 2em;
+
+    .bar-title-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
     }
+    .bar-title{
+        font-size: 1.5em;
+    }
+
+    .switch-labeled {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .switch-label {
+        color: white;
+        font-size: 0.75rem;
+    }
+
+    .switch {
+		position: relative;
+		display: inline-block;
+		width: 40px;
+		height: 24px;
+	}
+	.switch input {
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+	.slider {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #ccc;
+		transition: 0.4s;
+		border-radius: 24px;
+	}
+	.slider:before {
+		position: absolute;
+		content: "";
+		height: 16px;
+		width: 16px;
+		left: 4px;
+		bottom: 4px;
+		background-color: #7c878e;
+		transition: 0.4s;
+		border-radius: 50%;
+	}
+	input:checked + .slider:before {
+		transform: translateX(16px);
+	}
 
     #bar-chart {
         flex: 1;
