@@ -103,9 +103,14 @@
     </div>
 </div>
 
-<h2>Takeaways</h2>
+<h2>Summary</h2>
     <p>
         Recommendations to policymakers are focused on expanding areas which already fall into a "transit-oriented development" category. A key feature of the housing crisis is the lack of, not necessarily the quality of secured housing. We should be focused on areas which score low on transit and development, and high on orientation.
+    </p>
+    <p>
+        The intractive visualization below allows you to explore TOD and housing statistics in the buffer zone around MBTA commuter rail and rapid-transit stations.
+         TOD scores have been normalized to be out of 100 with the addition of our Zone Potential metric. Toggling to "housing" mode allows you to explore how different
+         municipalties are or are not taking advantage of the zoning laws around MBTA stations, and how the average home price might play a role.
     </p>
 <h1>MBTA TOD & Housing by the Numbers</h1>
 <UnusedHousing/>
