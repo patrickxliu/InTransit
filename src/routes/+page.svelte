@@ -3,7 +3,10 @@
     import {onMount} from "svelte";
     import bars from "$lib/Bars.svelte";
     import UnusedHousing from "$lib/unused_housing.svelte";
-    import Timeline from "$lib/timeline.svelte";
+    import Timeline from "$lib/timeline2.svelte";
+    export const ssr = false;
+
+    
     // import '../../static/style.css'
 
     let data = [];
@@ -33,7 +36,7 @@
     will give insight into the current makeup of those areas.
  </p>
 
-<h1>Boston Zoning History</h1>
+ <h1>Boston Zoning History</h1>
 <Timeline>timeline</Timeline>
 
 <h1>TOD Scores of MBTA Communities</h1>
