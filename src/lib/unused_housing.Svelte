@@ -22,7 +22,7 @@
                     { key: 'Transit', value: 0 },
                     { key: 'Orientation', value: 0 },
                     { key: 'Development', value: 0 },
-                    { key: 'Zone Potential', value: 0 },
+                    { key: 'Zone Potential', value: 0},
                 ];
     let avg_val='N/A';
     let tod_score='N/A';
@@ -178,9 +178,11 @@
             svg.append('g').attr('class', 'y-axis');
         }
         const initialBarData = [
-            { key: 'Zoned Units', value: 0 },
-            { key: 'Existing Units', value: 0 },
-        ];
+                    { key: 'Transit', value: 0 },
+                    { key: 'Orientation', value: 0 },
+                    { key: 'Development', value: 0 },
+                    { key: 'Zone Potential', value: 0},
+                ];
 
         updateBarChart(initialBarData, 'Select a station');
 
@@ -312,7 +314,7 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
+                { key: 'Zone Potential', value: +feature.properties.etod_sub4z*4 },
             ];
 
             const avgPrice = feature.properties.avg_value;
@@ -320,7 +322,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+feature.properties.etod_sub4z
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -328,7 +330,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = `${tod_score}/80`;
             }
         });
 
@@ -463,7 +465,7 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
+                { key: 'Zone Potential', value: +feature.properties.etod_sub4z*4 },
             ];
 
             const avgPrice = feature.properties.avg_value;
@@ -471,7 +473,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+feature.properties.etod_sub4z
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))        
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -479,7 +481,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = `${tod_score}/80`;
             }
         });
 
@@ -633,7 +635,7 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
+                { key: 'Zone Potential', value: +feature.properties.etod_sub4z*4 },
             ];
             
             const avgPrice = feature.properties.avg_value;
@@ -641,7 +643,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+feature.properties.etod_sub4z
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -649,7 +651,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = `${tod_score}/80`;
             }
         });
         
@@ -783,7 +785,7 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
+                { key: 'Zone Potential', value: +feature.properties.etod_sub4z*4 },
             ];
             
             const avgPrice = feature.properties.avg_value;
@@ -791,7 +793,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+feature.properties.etod_sub4z
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -799,7 +801,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = `${tod_score}/80`;
             }
         });
 
@@ -933,7 +935,7 @@
                 { key: 'Transit', value: +feature.properties.etod_sub1t },
                 { key: 'Orientation', value: +feature.properties.etod_sub2o },
                 { key: 'Development', value: +feature.properties.etod_sub3d },
-                { key: 'Zone Potential', value: +feature.properties.etod_sub4z },
+                { key: 'Zone Potential', value: +feature.properties.etod_sub4z*4 },
             ];
             
             const avgPrice = feature.properties.avg_value;
@@ -941,7 +943,7 @@
                 ? `$${Number(avgPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : 'N/A';
 
-            tod_score=feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+feature.properties.etod_sub4z
+            tod_score=(feature.properties.etod_sub1t+feature.properties.etod_sub2o+feature.properties.etod_sub3d+(feature.properties.etod_sub4z*4))
             
             if (housing){
                 updateBarChart(housingData,selectedStation);
@@ -949,7 +951,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = `${tod_score}/80`;
             }
         });
     }
@@ -1018,13 +1020,13 @@
                         { key: 'Transit', value: 0 },
                         { key: 'Orientation', value: 0 },
                         { key: 'Development', value: 0 },
-                        { key: 'Zone Potential', value: 0 },
+                        { key: 'Zone Potential', value: 0}
                     ], 'Select a station');
                 }
                 else{
                     updateBarChart(todData, selectedStation)
                 }
-                document.getElementById('avg-price').textContent = tod_score;
+                document.getElementById('avg-price').textContent = tod_score!=='N/A' ? `${tod_score} / 80`: 'N/A';
             }
         }
     
