@@ -333,7 +333,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = `${tod_score}/80`;
+                document.getElementById('avg-price').textContent = `${tod_score}/100`;
             }
         });
 
@@ -484,7 +484,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = `${tod_score}/80`;
+                document.getElementById('avg-price').textContent = `${tod_score}/100`;
             }
         });
 
@@ -654,7 +654,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = `${tod_score}/80`;
+                document.getElementById('avg-price').textContent = tod_score!==0 ? `${tod_score}/100`: `N/A`;
             }
         });
         
@@ -804,7 +804,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = `${tod_score}/80`;
+                document.getElementById('avg-price').textContent = `${tod_score}/100`;
             }
         });
 
@@ -954,7 +954,7 @@
             }
             else{
                 updateBarChart(todData,selectedStation);
-                document.getElementById('avg-price').textContent = `${tod_score}/80`;
+                document.getElementById('avg-price').textContent = `${tod_score}/100`;
             }
         });
     }
