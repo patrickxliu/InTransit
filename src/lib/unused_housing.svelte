@@ -30,7 +30,7 @@
         const svg = d3.select('#bar-chart svg');
         const barHeight = 400;
         const barWidth = 400;
-        const barMargin = { top: 20, right: 20, bottom: 20, left: 40 };
+        const barMargin = { top: 20, right: 20, bottom: 20, left: 60 };
 
 
         const x = d3.scaleBand()
