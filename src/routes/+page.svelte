@@ -69,7 +69,7 @@
     <ul>
         <li>Percent of households with 0 vehicles available: high ranking station areas are likely to have higher transit ridership and lower VMT per household</li>
         <li>Percent of households earning under 25k per year: high ranking station areas are likely to depend on transit for mobility</li>
-        <li>Renters as a share of all hosueholds: high ranking stations are more likely to use public transport than homeowners and less likely to own cars, more likely to use transit</li>
+        <li>Renters as a share of all households: high ranking stations are more likely to use public transport than homeowners and less likely to own cars, more likely to use transit</li>
         <li>Estimated household transportation costs as a percent of regional median income: high ranking stations have viable alternatives to costly driving</li>
     </ul>
 <h2>Development</h2>
@@ -87,7 +87,7 @@
     <p>
         Recommendations to policymakers are focused on expanding areas which already fall into a "transit-oriented development" category. A key feature of the housing crisis is the lack of, not necessarily the quality of secured housing. We should be focused on areas which score low on transit and development, and high on orientation.
     </p>
-<h1>Unbuilt Housing Units in MBTA Buffer Zones</h1>
+<h1>MBTA TOD & Housing by the Numbers</h1>
 <UnusedHousing/>
 
 <h2>Zone Potential</h2>
