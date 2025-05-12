@@ -26,7 +26,7 @@
 </script>
 
 
-<img src ="images/transit-sign.svg" alt="heading" width="100%">
+<img src ="images/header.svg" alt="heading" width="100%">
 <!-- <h1 class="question">HOW IS ZONING CURRENTLY LIMITING THE SUPPLY OF TRANSIT-ACCESSIBLE HOUSING?</h1> -->
 <h1>Introduction</h1>
 <p>The housing crisis in Massachusetts is at an all-time high, and as demand for housing continues to grow, 
