@@ -26,17 +26,17 @@
 </script>
 
 
-<img src ="images/Title.png" alt="heading">
+<img src ="images/transit-sign.svg" alt="heading" width="100%">
 <!-- <h1 class="question">HOW IS ZONING CURRENTLY LIMITING THE SUPPLY OF TRANSIT-ACCESSIBLE HOUSING?</h1> -->
 <h1>Introduction</h1>
 <p>The housing crisis in Massachusetts is at an all-time high, and as demand for housing continues to grow, 
     the government is taking steps to spur more construction.
     This project focuses on one such step: the MBTA Communities act. The Communities act focuses on increasing density in the areas within .5 miles of 
-    commuter rail, subway, ferry, and bus stations. We wanted to get a better understanding of what those areas are like. The following visualizations 
+    commuter rail, subway, ferry, and bus stations, called the buffer zone. We wanted to get a better understanding of what those areas are like. The following visualizations 
     will give insight into the current makeup of those areas.
  </p>
 
- <h1>Boston Zoning History</h1>
+<h1>Boston Zoning History</h1>
 <Timeline>timeline</Timeline>
 
 <h1>TOD Scores of MBTA Communities</h1>
@@ -52,7 +52,7 @@
         Each category score is the sum of several subscores, each of which represent the quintile ranking of an MBTA community against all MBTA communities.
     </p>
 <h2>Transit</h2>
-    <iframe title="Hello" src="transit.html" width="100%" height="600px" />
+    <!-- <iframe title="Hello" src="transit.html" width="100%" height="600px" /> -->
     <p>
         The Transit score is the sum of three factors: 
     </p>
@@ -62,7 +62,7 @@
         <li>Percent of commuters using a mode other than driving alone: high ranking station areas get quality and frequent transit service</li>
     </ul>
 <h2>Orientation</h2>
-    <iframe title="Hello" src="orientation.html" width="100%" height="600px" />
+    <!-- <iframe title="Hello" src="orientation.html" width="100%" height="600px" /> -->
     <p>
         The Orientation score is the sum of four factors: 
     </p>
@@ -73,7 +73,7 @@
         <li>Estimated household transportation costs as a percent of regional median income: high ranking stations have viable alternatives to costly driving</li>
     </ul>
 <h2>Development</h2>
-    <iframe title="Hello" src="development.html" width="100%" height="600px" />
+    <!-- <iframe title="Hello" src="development.html" width="100%" height="600px" /> -->
     <p>
         The Development score is the sum of three factors: 
     </p>
@@ -84,38 +84,51 @@
     </ul>
 
 <h2>Takeaways</h2>
-<p>
-    Recommendations to policymakers are focused on expanding areas which already fall into a "transit-oriented development" category. A key feature of the housing crisis is the lack of, not necessarily the quality of secured housing. We should be focused on areas which score low on transit and development, and high on orientation.
-</p>
+    <p>
+        Recommendations to policymakers are focused on expanding areas which already fall into a "transit-oriented development" category. A key feature of the housing crisis is the lack of, not necessarily the quality of secured housing. We should be focused on areas which score low on transit and development, and high on orientation.
+    </p>
 <h1>Unbuilt Housing Units in MBTA Buffer Zones</h1>
 <UnusedHousing/>
+
+<h2>Zone Potential</h2>
+    <p>
+        The Zone Potential score is the quintile ranking of zoned units, less built housing. In other words, it is the number of additional housing units that zoning supports.
+    </p>
+
+<h1>Conclusions and Future Directions</h1>
+    <p>
+        Including our Zone Potential subscore, top scoring MBTA communities include Massachusetts Avenue on the Orange Line,
+        Northeastern University and Symphony on the Green Line,
+        South Station on the Red Line, and other downtown areas whose buffer zones are already highly developed with non-residential units. To maximize the usability of this subscore, it would be necessary to factor in <i>developable</i> zoned units.
+
+        The overall trend is that zoning utilization is quite low; just because housing units <i>could</i> be built doesn't mean anyone has incentive to actually do it. But the primary opposition appears to come from residents via arguments against school overcrowding and lowering home values.
+    </p>
+
 <style>
     @import '../../static/style.css';
     :root {
-  --blue: #2F5DA6;
-  --green: #008150;
-  --orange: #FD8A03;
-  --red: #FA2D27;
-  --silver: #9A9C9D;
-  --purple: #7B388C;
-}
+        --blue: #2F5DA6;
+        --green: #008150;
+        --orange: #FD8A03;
+        --red: #FA2D27;
+        --silver: #9A9C9D;
+        --purple: #7B388C;
+    }
+/* 
+    body {
+        background-color: rgb(255, 255, 255);
+        color: white;
+        margin: 3%;
+    } */
 
-/* body {
-  background-color: rgb(32, 32, 32);
-  color: white;
-  margin: 3%;
-} */
+    h1 {
+        font-family: helvetica;
+        text-align: center;
+        background-color: var(--green);
+        border-radius: 4px;
+    }
 
-
-
-h1 {
-  font-family: helvetica;
-  text-align: center;
-  background-color: var(--green);
-  border-radius: 4px;
-}
-
-    h2{
+    h2 {
         font-family: helvetica;
         text-align: center;
         background-color: var(--blue);
